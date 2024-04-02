@@ -1,11 +1,11 @@
-name: Deploy my to S3
+name: Deploy to S3
 on:
   push:
     branches:
       - dev
 
 jobs:
-  deploy:
+  deployment:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
