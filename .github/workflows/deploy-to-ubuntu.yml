@@ -1,7 +1,10 @@
 # n-hesitez pas a corriger les erreurs presentes dans cette configuration
 name: Deploy to Ubuntu
 
-on: [push]
+on:
+  push:
+    branches:
+      - prod
 
 jobs:
   deploy:
@@ -9,14 +12,14 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     #--> ATTENTION : NE TOUCHEZ PAS A CE STEP
     - name: Insert commit ID into HTML
       run: |
         sed -i "s/data-commit-id=\".*\"/data-commit-id=\"${{ github.sha }}\"/g" index.html
         # Vérifier que le remplacement a été effectué correctement
-        grep -q "data-commit-id=\"${{ github.sha }}\"" contact.html && echo "ID du commit inséré avec succès." || { echo "Erreur : ID du commit non inséré."; exit 1; }
+        grep -q "data-commit-id=\"${{ github.sha }}\"" index.html && echo "ID du commit inséré avec succès." || { echo "Erreur : ID du commit non inséré."; exit 1; }
       env:
         AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
 
@@ -30,6 +33,6 @@ jobs:
       touch mykey.pem
       echo "${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}" > mykeyy.pem
       chmod 600 ./mykey.pem
-      ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@${{ secrets.AWS_LIGHTSAIL_PUBLIC_ IP }} 'mkdir -p /var/www/html/${{ secrets.AWS_BUCKET_NAME }}'
-      scp -o StrictHostKeyChecking=no -i mykey.pem -r ./* ubuntu@${{ secrets. AWS_LIGHTSAIL_PUBLIC_IP }}:/var/www/html/${{ secrets.AWS_BUCKET_NAME }}
+      ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@${{ secrets.AWS_LIGHTSAIL_PUBLIC_IP }} 'mkdir -p /var/www/html/${{ secrets.AWS_BUCKET_NAME }}'
+      scp -o StrictHostKeyChecking=no -i mykey.pem -r ./* ubuntu@${{ secrets.AWS_LIGHTSAIL_PUBLIC_IP }}:/var/www/html/${{ secrets.AWS_BUCKET_NAME }}
 
