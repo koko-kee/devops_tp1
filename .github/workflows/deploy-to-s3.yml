@@ -5,7 +5,7 @@ on:
     branches:
       - dev
 
-jobs:
+ jobs:
   deployment: #  nom
     runs-on: ubuntu-latest # fournir temporairement une instance ubuntu
     steps:
