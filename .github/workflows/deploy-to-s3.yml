@@ -1,4 +1,5 @@
-name: Deploy to S3
+name: 'Deploy  to S3'
+
 on:
   push:
     branches:
@@ -11,7 +12,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    #--> ATTENTION : NE TOUCHEZ PAS A CE STEP
     - name: Insert commit ID into HTML
       run: |
         sed -i "s/data-commit-id=\".*\"/data-commit-id=\"${{ github.sha }}\"/g" index.html
@@ -20,7 +20,7 @@ jobs:
       env:
         AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
 
-   - name : install AWS CLI
+    - name : install AWS CLI
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-pip
@@ -32,7 +32,6 @@ jobs:
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set region eu-west-3
 
-    
     - name: Check if bucket exists 
       run: |
         if aws s3api head-bucket --bucket $AWS_BUCKET_NAME; then
