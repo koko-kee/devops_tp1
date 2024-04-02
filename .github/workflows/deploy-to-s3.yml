@@ -16,7 +16,7 @@ jobs:
         run: |
           sed -i "s/data-commit-id=\".*\"/data-commit-id=\"${{ github.sha }}\"/g" index.html
           # Check if the replacement was done correctly
-          grep -q "data-commit-id=\"${{ github.sha }}\"" contact.html && echo "Commit ID inserted successfully." || { echo "Error: Commit ID not inserted."; exit 1; }
+          grep -q "data-commit-id=\"${{ github.sha }}\"" index.html && echo "Commit ID inserted successfully." || { echo "Error: Commit ID not inserted."; exit 1; }
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
 
